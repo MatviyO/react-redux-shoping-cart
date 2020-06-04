@@ -1,8 +1,24 @@
-import {DECREASE, INCREASE, CLEAR_CART, GET_AMOUNT, GET_TOTALS, REMOVE} from "./actions";
+import {DECREASE, INCREASE, CLEAR_CART, TOGGLE_AMOUNT, GET_TOTALS, REMOVE} from "./actions";
 
 function reducer(state, action) {
 
    switch(action.type) {
+       case GET_TOTALS:
+           let {total, amount} = state.cart.reduce((cartTotal, cartItem) => {
+               const {price, amount} = cartItem
+               const itemTotal = amount * price;
+
+               cartTotal.total += itemTotal
+               cartTotal.amount += amount
+
+               return cartTotal
+
+           }, {total: 0, amount: 0})
+
+           total = parseInt(total.toFixed(2));
+           return {...state, total, amount}
+       case TOGGLE_AMOUNT:
+           return
        case CLEAR_CART:
            return {...state, cart: []}
        case DECREASE:
